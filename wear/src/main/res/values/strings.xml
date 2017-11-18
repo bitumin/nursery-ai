@@ -1,0 +1,18 @@
+<resources>
+    <string name="app_name">Nursery AI</string>
+    <string name="hello_world">Hello world!</string>
+    <string name="hello_round">Hello Round World!</string>
+    <string name="hello_square">Hello Square World!</string>
+    <string name="action_settings">Settings</string>
+    <string name="speech_prompt">Say something&#8230;</string>
+    <string name="speech_not_supported">Sorry! Your device doesn\'t support speech input</string>
+    <string name="tap_on_mic">Tap on mic to speak</string>
+    <string name="Button_Text">Another?</string>
+    <string name="error_getting_response">Enter getting response from the bot!</string>
+    <string name="microphone">Microphone</string>
+    <string name="patient_profile_image">Patient profile image</string>
+    <string name="test_text_who_is_next">A quién le toca</string>
+    <string name="no_internet_error">No internet connection</string>
+    <string name="warning_disconnected_sockets">Disconnected from socket.io</string>
+    <string name="warning_connected_sockets">Connected to socket.io</string>
+</resources>
