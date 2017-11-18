@@ -5,45 +5,32 @@ import android.app.Activity;
 import android.content.ActivityNotFoundException;
 import android.content.Context;
 import android.content.Intent;
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.speech.RecognizerIntent;
 import android.support.wearable.view.WatchViewStub;
-import android.util.Log;
 import android.view.View;
-import android.widget.ImageView;
-import android.widget.TextView;
 import android.widget.Toast;
 
-import java.io.InputStream;
-import java.net.InetAddress;
-import java.net.MalformedURLException;
-import java.net.URISyntaxException;
 import java.util.List;
 import java.util.Locale;
-import java.util.Timer;
-import java.util.TimerTask;
 
 import ai.api.AIServiceException;
 import ai.api.android.AIConfiguration;
 import ai.api.android.AIDataService;
 import ai.api.model.AIRequest;
 import ai.api.model.AIResponse;
-import io.socket.client.IO;
-import io.socket.client.Socket;
-import io.socket.emitter.Emitter;
+import ai.api.model.Metadata;
+import ai.api.model.ResponseMessage;
+import ai.api.model.Result;
 
 public class MainActivity extends Activity {
 
     private static final int SPEECH_RECOGNIZER_REQUEST_CODE = 100;
-    //private static final String BOT_CLIENT_KEY = "0f7eaf5e97204360bf2251d0982c361e";
     private static final String BOT_CLIENT_KEY = "9ecd9dc048a446a1a29a48b3235c914f";
     private static final String INTENT_NEXT_PATIENT = "next";
     private static final String INTENT_UPDATE_RECEIVED = "enviado";
     private static final String INTENT_DOCTOR_SUMMARY = "doctor";
-    private TextView mTextView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -51,11 +38,11 @@ public class MainActivity extends Activity {
         setContentView(R.layout.activity_main);
 //        initSocketIO();
 
-        final WatchViewStub stub = (WatchViewStub) findViewById(R.id.activity_main);
+        final WatchViewStub stub = findViewById(R.id.activity_main);
         stub.setOnLayoutInflatedListener(new WatchViewStub.OnLayoutInflatedListener() {
             @Override
             public void onLayoutInflated(WatchViewStub stub) {
-                mTextView = (TextView) stub.findViewById(R.id.text);
+                startSpeechRecognition();
             }
         });
     }
@@ -69,7 +56,6 @@ public class MainActivity extends Activity {
         intent.putExtra(RecognizerIntent.EXTRA_LANGUAGE, Locale.getDefault());
         intent.putExtra(RecognizerIntent.EXTRA_PROMPT, getString(R.string.speech_prompt));
 
-        // Start the Activity that handles the recognised text
         try {
             startActivityForResult(intent, SPEECH_RECOGNIZER_REQUEST_CODE);
         } catch (ActivityNotFoundException a) {
@@ -96,7 +82,9 @@ public class MainActivity extends Activity {
                     try {
                         getResponseFromBot(getApplicationContext(), recognizedText);
                     } catch (Exception ex) {
-                        mTextView.setText(R.string.error_getting_response);
+                        Toast.makeText(getApplicationContext(),
+                                getString(R.string.speech_not_supported),
+                                Toast.LENGTH_SHORT).show();
                     }
                 }
                 break;
@@ -110,12 +98,6 @@ public class MainActivity extends Activity {
 
     @SuppressLint("StaticFieldLeak")
     private void getResponseFromBot(final Context context, String recognizedText) {
-//        if (!isInternetAvailable()) {
-//            Toast.makeText(getApplicationContext(),
-//                    R.string.no_internet_error,
-//                    Toast.LENGTH_SHORT).show();
-//            return;
-//        }
 
         AIConfiguration configuration = new AIConfiguration(BOT_CLIENT_KEY,
                 AIConfiguration.SupportedLanguages.English,
@@ -142,16 +124,30 @@ public class MainActivity extends Activity {
                 @Override
                 protected void onPostExecute(AIResponse response) {
                     if (null == response) {
-                        // do nothing
+                        return;
                     } else if (response.getStatus().getCode() == 200) {
-                        String intent = ""; // TODO: get the fucking intent from the response!
+                        final Result result = response.getResult();
+                        final Metadata metadata = result.getMetadata();
+                        if (metadata == null) {
+                            return;
+                        }
+
+                        String intent = metadata.getIntentName();
                         switch (intent) {
                             case INTENT_DOCTOR_SUMMARY: {
                                 loadDoctorSummaryView();
                                 break;
                             }
                             case INTENT_NEXT_PATIENT: {
-                                loadNextPatientView();
+                                List<ResponseMessage> messages = result.getFulfillment().getMessages();
+                                ResponseMessage.ResponsePayload payload = (ResponseMessage.ResponsePayload) messages.get(1);
+                                String specialNeeds = payload.getPayload().get("special_needs").toString();
+                                String name = payload.getPayload().get("name").toString();
+                                String gender = payload.getPayload().get("genre").toString();
+                                String age = payload.getPayload().get("age").toString();
+                                String image = payload.getPayload().get("image").toString();
+
+                                loadPatientInformationView(name, age, gender, specialNeeds, image);
                                 break;
                             }
                             case INTENT_UPDATE_RECEIVED: {
@@ -159,91 +155,30 @@ public class MainActivity extends Activity {
                                 break;
                             }
                         }
-
-                        readSpeech(response.getResult().getFulfillment().getSpeech());
                     } else {
                         response.getStatus().getErrorDetails();
                     }
                 }
             }.execute(request);
-
-            // AIResponse response = dataService.request(request);
         } catch (Exception ex) {
             ex.printStackTrace();
         }
     }
 
-    private void readSpeech(String speech) {
-        // TODO: speech not supported!
-    }
-
     private void loadUpdateReceivedView() {
-        setContentView(R.layout.update_success);
-
-        final WatchViewStub stub = (WatchViewStub) findViewById(R.id.update_success);
-        stub.setOnLayoutInflatedListener(new WatchViewStub.OnLayoutInflatedListener() {
-            @Override
-            public void onLayoutInflated(WatchViewStub stub) {
-                // TODO: display the received message!
-            }
-        });
+        Intent intent = new Intent(MainActivity.this, UpdateSuccess.class);
+        startActivity(intent);
     }
 
-    private void loadNextPatientView() {
-        setContentView(R.layout.patient_profile_information);
-
-        final WatchViewStub stub = (WatchViewStub) findViewById(R.id.patient_profile_information);
-        stub.setOnLayoutInflatedListener(new WatchViewStub.OnLayoutInflatedListener() {
-            @Override
-            public void onLayoutInflated(WatchViewStub stub) {
-
-                // Display the patient personal information
-                loadPatientInformationView();
-
-                new Timer().schedule(new TimerTask() {
-                    @Override
-                    public void run() {
-                        // Display the patient image (fullscreen, dynamic)
-                        new DownloadImageTask((ImageView) findViewById(R.id.imageView))
-                                .execute("https://i.pinimg.com/736x/03/73/94/037394216591a5a8ebc906bb5ad2c4c9--monica-bellucci-makeup-monica-monica.jpg");
-                    }
-                }, 2000);
-            }
-        });
-    }
-
-    private void loadPatientInformationView() {
-        setContentView(R.layout.patient_profile_information);
-
-        final WatchViewStub stub = (WatchViewStub) findViewById(R.id.patient_profile_image);
-        stub.setOnLayoutInflatedListener(new WatchViewStub.OnLayoutInflatedListener() {
-            @Override
-            public void onLayoutInflated(WatchViewStub stub) {
-                // TODO: display the patient data on screen! (dynamic!)
-            }
-        });
+    private void loadPatientInformationView(String name, String age, String gender, String specialNeeds, String image) {
+        Intent intent = new Intent(MainActivity.this, PatientProfileInformation.class);
+        startActivity(intent);
     }
 
     private void loadDoctorSummaryView() {
-        setContentView(R.layout.activity_main);
-
-        final WatchViewStub stub = (WatchViewStub) findViewById(R.id.activity_main);
-        stub.setOnLayoutInflatedListener(new WatchViewStub.OnLayoutInflatedListener() {
-            @Override
-            public void onLayoutInflated(WatchViewStub stub) {
-                // TODO: display the doctor summary (hardcoded!)
-            }
-        });
+        Intent intent = new Intent(MainActivity.this, DoctorSummary.class);
+        startActivity(intent);
     }
-
-//    public boolean isInternetAvailable() {
-//        try {
-//            InetAddress ipAddr = InetAddress.getByName("google.com");
-//            return !ipAddr.equals("");
-//        } catch (Exception e) {
-//            return false;
-//        }
-//    }
 
 //    private void initSocketIO() {
 //        Socket socket;
@@ -271,30 +206,4 @@ public class MainActivity extends Activity {
 //            e.printStackTrace();
 //        }
 //    }
-}
-
-class DownloadImageTask extends AsyncTask<String, Void, Bitmap> {
-    @SuppressLint("StaticFieldLeak")
-    private ImageView bmImage;
-
-    DownloadImageTask(ImageView bmImage) {
-        this.bmImage = bmImage;
-    }
-
-    protected Bitmap doInBackground(String... urls) {
-        String urldisplay = urls[0];
-        Bitmap mIcon11 = null;
-        try {
-            InputStream in = new java.net.URL(urldisplay).openStream();
-            mIcon11 = BitmapFactory.decodeStream(in);
-        } catch (Exception e) {
-            Log.e("Error", e.getMessage());
-            e.printStackTrace();
-        }
-        return mIcon11;
-    }
-
-    protected void onPostExecute(Bitmap result) {
-        bmImage.setImageBitmap(result);
-    }
 }
