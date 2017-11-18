@@ -27,6 +27,10 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+        <activity android:name=".PatientProfileImage" />
+        <activity android:name=".PatientProfileInformation" />
+        <activity android:name=".UpdateSuccess" />
+        <activity android:name=".DoctorSummary" />
     </application>
 
 </manifest>

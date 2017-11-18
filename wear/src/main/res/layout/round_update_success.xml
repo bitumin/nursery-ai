@@ -13,7 +13,6 @@
         android:scaleX=".6"
         android:scaleY=".6"
         app:srcCompat="@mipmap/check" />
-
     <TextView
         android:id="@+id/textView"
         android:layout_width="wrap_content"
