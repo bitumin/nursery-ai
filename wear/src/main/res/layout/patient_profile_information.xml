@@ -7,5 +7,5 @@
     android:layout_height="match_parent"
     app:rectLayout="@layout/rect_patient_profile_information"
     app:roundLayout="@layout/round_patient_profile_information"
-    tools:context=".MainActivity"
+    tools:context=".PatientProfileInformation"
     tools:deviceIds="wear" />

@@ -29,7 +29,6 @@ import io.socket.client.Socket;
 import io.socket.emitter.Emitter;
 
 public class MainActivity extends Activity {
-    private Socket socket;
     private static final int SPEECH_RECOGNIZER_REQUEST_CODE = 100;
     private static final String BOT_CLIENT_KEY = "9ecd9dc048a446a1a29a48b3235c914f";
     private static final String INTENT_NEXT_PATIENT = "next";
@@ -38,10 +37,9 @@ public class MainActivity extends Activity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        socket = null;
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        initSocketIO();
+        initSocketIO(this);
 
         final WatchViewStub stub = findViewById(R.id.activity_main);
         stub.setOnLayoutInflatedListener(new WatchViewStub.OnLayoutInflatedListener() {
@@ -193,29 +191,29 @@ public class MainActivity extends Activity {
     }
 
     private void loadBlueNotificationView() {
-        Intent intent = new Intent(MainActivity.this, DoctorSummary.class);
+        Intent intent = new Intent(MainActivity.this, FifteenActivity.class);
         startActivity(intent);
     }
 
     private void loadYellowNotificationView() {
-        Intent intent = new Intent(MainActivity.this, DoctorSummary.class);
+        Intent intent = new Intent(MainActivity.this, SevenActivity.class);
         startActivity(intent);
     }
 
-    private void initSocketIO() {
+    private static void initSocketIO(final MainActivity mainActivity) {
         try {
-            socket = IO.socket("http://f78c1f31.ngrok.io");
+            Socket socket = IO.socket("http://f78c1f31.ngrok.io");
             socket.on(Socket.EVENT_CONNECT, new Emitter.Listener() {
                 public void call(Object... arg0) {
                     System.out.println("connected to sockets");
                 }
             }).on("request-nurse-push", new Emitter.Listener() {
                 public void call(Object... arg0) {
-                    loadBlueNotificationView();
+                    mainActivity.loadBlueNotificationView();
                 }
             }).on("request-nurse-end-push", new Emitter.Listener() {
                 public void call(Object... arg0) {
-                    loadYellowNotificationView();
+                    mainActivity.loadYellowNotificationView();
                 }
             }).on(Socket.EVENT_DISCONNECT, new Emitter.Listener() {
                 public void call(Object... arg0) {

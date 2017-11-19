@@ -31,6 +31,8 @@
         <activity android:name=".PatientProfileInformation" />
         <activity android:name=".UpdateSuccess" />
         <activity android:name=".DoctorSummary" />
+        <activity android:name=".SevenActivity" />
+        <activity android:name=".FifteenActivity" />
     </application>
 
 </manifest>
