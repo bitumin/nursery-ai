@@ -33,6 +33,7 @@
         <activity android:name=".DoctorSummary" />
         <activity android:name=".SevenActivity" />
         <activity android:name=".FifteenActivity" />
+        <activity android:name=".UpdateSuccessTimer" />
     </application>
 
 </manifest>

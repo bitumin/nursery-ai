@@ -14,7 +14,7 @@ public class SevenActivity extends Activity {
     }
 
     public void on7Click(View view) {
-        Intent intent = new Intent(SevenActivity.this, MainActivity.class);
+        Intent intent = new Intent(SevenActivity.this, UpdateSuccessTimer.class);
         startActivity(intent);
     }
 }
