@@ -9,7 +9,6 @@
         android:layout_height="match_parent"
         android:layout_alignParentStart="true"
         android:layout_alignParentTop="true"
-        android:background="@drawable/confirmation_animation"
         android:contentDescription="@string/patient_profile_image"
-        android:onClick="onPPClick"/>
+        android:onClick="onPPClick" />
 </RelativeLayout>
