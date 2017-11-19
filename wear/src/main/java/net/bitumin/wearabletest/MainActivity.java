@@ -14,6 +14,7 @@ import android.widget.Toast;
 
 import java.util.List;
 import java.util.Locale;
+import android.os.Vibrator;
 
 import ai.api.AIServiceException;
 import ai.api.android.AIConfiguration;
@@ -204,12 +205,21 @@ public class MainActivity extends Activity {
         Socket socket = myApp.getSocket();
         socket.off("request-nurse-push").on("request-nurse-push", new Emitter.Listener() {
             public void call(Object... arg0) {
+                vibrate(500);
                 loadBlueNotificationView();
             }
         }).off("request-nurse-end-push").on("request-nurse-end-push", new Emitter.Listener() {
             public void call(Object... arg0) {
+                vibrate(500);
                 loadYellowNotificationView();
             }
         });
+    }
+
+    private void vibrate(int milliseconds) {
+        Vibrator v = (Vibrator) getSystemService(Context.VIBRATOR_SERVICE);
+        if(v != null) {
+            v.vibrate(milliseconds);
+        }
     }
 }
