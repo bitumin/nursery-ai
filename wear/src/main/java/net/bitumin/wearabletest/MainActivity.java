@@ -12,6 +12,7 @@ import android.support.wearable.view.WatchViewStub;
 import android.view.View;
 import android.widget.Toast;
 
+import java.net.URISyntaxException;
 import java.util.List;
 import java.util.Locale;
 
@@ -23,6 +24,9 @@ import ai.api.model.AIResponse;
 import ai.api.model.Metadata;
 import ai.api.model.ResponseMessage;
 import ai.api.model.Result;
+import io.socket.client.IO;
+import io.socket.client.Socket;
+import io.socket.emitter.Emitter;
 
 public class MainActivity extends Activity {
 
@@ -36,7 +40,7 @@ public class MainActivity extends Activity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-//        initSocketIO();
+        initSocketIO();
 
         final WatchViewStub stub = findViewById(R.id.activity_main);
         stub.setOnLayoutInflatedListener(new WatchViewStub.OnLayoutInflatedListener() {
@@ -180,30 +184,26 @@ public class MainActivity extends Activity {
         startActivity(intent);
     }
 
-//    private void initSocketIO() {
-//        Socket socket;
-//        try {
-//            socket = IO.socket("http://f78c1f31.ngrok.io");
-//            socket.on(Socket.EVENT_CONNECT, new Emitter.Listener() {
-//                public void call(Object... arg0) {
-//                    Toast.makeText(getApplicationContext(),
-//                            R.string.warning_connected_sockets,
-//                            Toast.LENGTH_SHORT).show();
-//                }
-//            }).on("request-nurse-push", new Emitter.Listener() {
-//                public void call(Object... arg0) {
-//                    System.out.println("push");
-//                }
-//            }).on(Socket.EVENT_DISCONNECT, new Emitter.Listener() {
-//                public void call(Object... arg0) {
-//                    Toast.makeText(getApplicationContext(),
-//                            R.string.warning_disconnected_sockets,
-//                            Toast.LENGTH_SHORT).show();
-//                }
-//            });
-//            socket.connect();
-//        } catch (URISyntaxException e) {
-//            e.printStackTrace();
-//        }
-//    }
+    private static void initSocketIO() {
+        Socket socket;
+        try {
+            socket = IO.socket("http://f78c1f31.ngrok.io");
+            socket.on(Socket.EVENT_CONNECT, new Emitter.Listener() {
+                public void call(Object... arg0) {
+                    System.out.println("connected to sockets");
+                }
+            }).on("request-nurse-push", new Emitter.Listener() {
+                public void call(Object... arg0) {
+                    System.out.println("push");
+                }
+            }).on(Socket.EVENT_DISCONNECT, new Emitter.Listener() {
+                public void call(Object... arg0) {
+                    System.out.println("disconnected from sockets");
+                }
+            });
+            socket.connect();
+        } catch (URISyntaxException e) {
+            e.printStackTrace();
+        }
+    }
 }

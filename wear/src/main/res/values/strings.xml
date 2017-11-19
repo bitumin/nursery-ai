@@ -15,4 +15,5 @@
     <string name="no_internet_error">No internet connection</string>
     <string name="warning_disconnected_sockets">Disconnected from socket.io</string>
     <string name="warning_connected_sockets">Connected to socket.io</string>
+    <string name="cita_pronto">Cita pronto</string>
 </resources>
