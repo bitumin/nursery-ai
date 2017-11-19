@@ -1,9 +1,9 @@
 package net.bitumin.wearabletest;
 
+import android.app.Activity;
 import android.os.Bundle;
-import android.support.v7.app.AppCompatActivity;
 
-public class PatientProfileImage extends AppCompatActivity {
+public class PatientProfileImage extends Activity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
