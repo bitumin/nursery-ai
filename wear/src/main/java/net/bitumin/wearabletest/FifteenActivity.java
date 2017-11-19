@@ -6,7 +6,6 @@ import android.os.Bundle;
 import android.view.View;
 
 import io.socket.client.Socket;
-import io.socket.emitter.Emitter;
 
 public class FifteenActivity extends Activity {
 

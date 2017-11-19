@@ -6,7 +6,6 @@ import android.os.Bundle;
 import android.support.wearable.view.WatchViewStub;
 import android.widget.TextView;
 
-import java.text.MessageFormat;
 import java.util.Timer;
 import java.util.TimerTask;
 
@@ -21,10 +20,11 @@ public class PatientProfileInformation extends Activity {
             @Override
             public void onLayoutInflated(WatchViewStub stub) {
 
-                String patientName = getIntent().getStringExtra("patient_name").replaceAll("^\"|\"$", "");;
-                String patientAge = getIntent().getStringExtra("patient_age").replaceAll("^\"|\"$", "") + " años";;
-                String patientGender = getIntent().getStringExtra("patient_gender").replaceAll("^\"|\"$", "");;
-                String patientNeeds = getIntent().getStringExtra("patient_needs").replaceAll("^\"|\"$", "");;
+                String patientName = getIntent().getStringExtra("patient_name").replaceAll("^\"|\"$", "");
+                String patientAge = getIntent().getStringExtra("patient_age").replaceAll("^\"|\"$", "") + " años";
+                String patientGender = getIntent().getStringExtra("patient_gender").replaceAll("^\"|\"$", "");
+                String patientNeeds = getIntent().getStringExtra("patient_needs").replaceAll("^\"|\"$", "");
+
                 final String patientImage = getIntent().getStringExtra("patient_image");
 
                 TextView patientNameTextView = findViewById(R.id.patientName);

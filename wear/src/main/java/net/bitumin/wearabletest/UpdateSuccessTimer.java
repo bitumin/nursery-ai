@@ -21,8 +21,8 @@ public class UpdateSuccessTimer extends Activity {
                 new Timer().schedule(new TimerTask() {
                     @Override
                     public void run() {
-                    Intent intent = new Intent(UpdateSuccessTimer.this, MainActivity.class);
-                    startActivity(intent);
+                        Intent intent = new Intent(UpdateSuccessTimer.this, MainActivity.class);
+                        startActivity(intent);
                     }
                 }, 1200);
             }
