@@ -29,7 +29,7 @@ import io.socket.client.Socket;
 import io.socket.emitter.Emitter;
 
 public class MainActivity extends Activity {
-    private Socket socket;
+    private SocketSingleton socket;
     private static final int SPEECH_RECOGNIZER_REQUEST_CODE = 100;
     private static final String BOT_CLIENT_KEY = "9ecd9dc048a446a1a29a48b3235c914f";
     private static final String INTENT_NEXT_PATIENT = "next";
@@ -203,28 +203,6 @@ public class MainActivity extends Activity {
     }
 
     private void initSocketIO() {
-        try {
-            socket = IO.socket("http://f78c1f31.ngrok.io");
-            socket.on(Socket.EVENT_CONNECT, new Emitter.Listener() {
-                public void call(Object... arg0) {
-                    System.out.println("connected to sockets");
-                }
-            }).on("request-nurse-push", new Emitter.Listener() {
-                public void call(Object... arg0) {
-                    loadBlueNotificationView();
-                }
-            }).on("request-nurse-end-push", new Emitter.Listener() {
-                public void call(Object... arg0) {
-                    loadYellowNotificationView();
-                }
-            }).on(Socket.EVENT_DISCONNECT, new Emitter.Listener() {
-                public void call(Object... arg0) {
-                    System.out.println("disconnected from sockets");
-                }
-            });
-            socket.connect();
-        } catch (URISyntaxException e) {
-            e.printStackTrace();
-        }
+        socket = SocketSingleton.getInstance();
     }
 }
