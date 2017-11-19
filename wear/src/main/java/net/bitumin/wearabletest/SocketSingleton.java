@@ -5,4 +5,5 @@ package net.bitumin.wearabletest;
  */
 
 public class SocketSingleton {
+
 }
