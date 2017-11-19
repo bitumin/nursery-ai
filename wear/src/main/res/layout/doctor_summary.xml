@@ -7,5 +7,5 @@
     android:layout_height="match_parent"
     app:rectLayout="@layout/rect_doctor_summary"
     app:roundLayout="@layout/round_doctor_summary"
-    tools:context=".MainActivity"
+    tools:context=".DoctorSummary"
     tools:deviceIds="wear" />

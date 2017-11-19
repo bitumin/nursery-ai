@@ -12,5 +12,6 @@
         android:layout_centerHorizontal="true"
         tools:context=".SevenActivity"
         android:layout_centerVertical="true"
-        android:background="@mipmap/seven" />
+        android:background="@mipmap/seven"
+        android:onClick="on7Click"/>
 </RelativeLayout>

@@ -13,5 +13,6 @@
         android:layout_centerVertical="true"
         tools:context=".FifteenActivity"
         android:scaleY="1.1"
-        android:background="@mipmap/fifteen" />
+        android:background="@mipmap/fifteen"
+        android:onClick="on15Click"/>
 </RelativeLayout>

@@ -29,7 +29,9 @@ import io.socket.client.Socket;
 import io.socket.emitter.Emitter;
 
 public class MainActivity extends Activity {
-    private SocketSingleton socket;
+
+    private Socket socket;
+
     private static final int SPEECH_RECOGNIZER_REQUEST_CODE = 100;
     private static final String BOT_CLIENT_KEY = "9ecd9dc048a446a1a29a48b3235c914f";
     private static final String INTENT_NEXT_PATIENT = "next";
@@ -38,7 +40,6 @@ public class MainActivity extends Activity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        socket = null;
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         initSocketIO();
@@ -193,16 +194,16 @@ public class MainActivity extends Activity {
     }
 
     private void loadBlueNotificationView() {
-        Intent intent = new Intent(MainActivity.this, DoctorSummary.class);
+        Intent intent = new Intent(MainActivity.this, FifteenActivity.class);
         startActivity(intent);
     }
 
     private void loadYellowNotificationView() {
-        Intent intent = new Intent(MainActivity.this, DoctorSummary.class);
+        Intent intent = new Intent(MainActivity.this, SevenActivity.class);
         startActivity(intent);
     }
 
     private void initSocketIO() {
-        socket = SocketSingleton.getInstance();
+        socket = SocketSingleton.getInstance().getInstanceSocket();
     }
 }

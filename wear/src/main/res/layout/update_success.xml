@@ -7,5 +7,5 @@
     android:layout_height="match_parent"
     app:rectLayout="@layout/rect_update_success"
     app:roundLayout="@layout/round_update_success"
-    tools:context=".MainActivity"
+    tools:context=".UpdateSuccess"
     tools:deviceIds="wear" />

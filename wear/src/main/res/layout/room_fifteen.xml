@@ -2,10 +2,10 @@
 <android.support.wearable.view.WatchViewStub xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/doctor_summary"
+    android:id="@+id/room_fifteen"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    app:rectLayout="@layout/rect_doctor_summary"
-    app:roundLayout="@layout/round_doctor_summary"
+    app:rectLayout="@layout/rect_room_fifteen"
+    app:roundLayout="@layout/round_room_fifteen"
     tools:context=".FifteenActivity"
     tools:deviceIds="wear" />

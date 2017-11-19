@@ -48,4 +48,11 @@ public class SocketSingleton {
         return INSTANCE;
     }
 
+    public Socket getInstanceSocket() {
+        if (null == socket || socket.equals(null)) {
+            new SocketSingleton();
+        }
+        return socket;
+    }
+
 }
