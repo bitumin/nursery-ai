@@ -21,20 +21,20 @@ public class PatientProfileInformation extends Activity {
             @Override
             public void onLayoutInflated(WatchViewStub stub) {
 
-                String patientName = getIntent().getStringExtra("patient_name");
-                String patientAge = getIntent().getStringExtra("patient_age");
-                String patientGender = getIntent().getStringExtra("patient_gender");
-                String patientNeeds = getIntent().getStringExtra("patient_needs");
+                String patientName = getIntent().getStringExtra("patient_name").replaceAll("^\"|\"$", "");;
+                String patientAge = getIntent().getStringExtra("patient_age").replaceAll("^\"|\"$", "") + " años";;
+                String patientGender = getIntent().getStringExtra("patient_gender").replaceAll("^\"|\"$", "");;
+                String patientNeeds = getIntent().getStringExtra("patient_needs").replaceAll("^\"|\"$", "");;
                 final String patientImage = getIntent().getStringExtra("patient_image");
 
                 TextView patientNameTextView = findViewById(R.id.patientName);
                 patientNameTextView.setText(patientName);
 
                 TextView patientAgeTextView = findViewById(R.id.patientAge);
-                patientAgeTextView.setText(MessageFormat.format("{0} | {1}", patientAge, patientGender));
+                patientAgeTextView.setText(patientAge);
 
-                TextView additionalInfoTextView = findViewById(R.id.additionalInfo);
-                additionalInfoTextView.setText(patientNeeds);
+                TextView additionalInfoTextView = findViewById(R.id.patientGenre);
+                additionalInfoTextView.setText(patientGender);
 
                 new Timer().schedule(new TimerTask() {
                     @Override

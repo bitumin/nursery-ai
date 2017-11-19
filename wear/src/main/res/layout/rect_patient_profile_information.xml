@@ -1,31 +1,52 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:layout_width="match_parent" android:layout_height="match_parent">
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:context=".RoundPacient"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
 
     <TextView
         android:id="@+id/patientName"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignParentStart="true"
         android:layout_alignParentTop="true"
-        android:layout_marginStart="34dp"
-        android:layout_marginTop="64dp"
-        android:text="name" />
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="24dp"
+        android:text="name"
+        android:textSize="24sp"
+        android:textStyle="bold" />
 
     <TextView
         android:id="@+id/patientAge"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignStart="@+id/patientName"
         android:layout_below="@+id/patientName"
-        android:text="age" />
+        android:layout_centerHorizontal="true"
+        android:text="age"
+        android:layout_marginTop="10dp"
+        android:textSize="20sp"
+        android:textAlignment="center"
+        android:visibility="visible" />
 
     <TextView
-        android:id="@+id/additionalInfo"
+        android:id="@+id/patientGenre"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignStart="@+id/patientAge"
         android:layout_below="@+id/patientAge"
-        android:text="additionalInfo" />
+        android:layout_centerHorizontal="true"
+        android:textSize="20sp"
+        android:text="Genre" />
+
+    <ImageView
+        android:id="@+id/imageView4"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignTop="@+id/patientGenre"
+        android:layout_centerHorizontal="true"
+        android:background="@mipmap/wheelchair"
+        android:layout_marginTop="12dp"
+        android:scaleX=".6"
+        android:scaleY=".7" />
+
 </RelativeLayout>
