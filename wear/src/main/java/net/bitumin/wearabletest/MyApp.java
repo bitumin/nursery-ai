@@ -12,7 +12,7 @@ public class MyApp extends Application {
 
     public MyApp() {
         try {
-            socket = IO.socket("http://f78c1f31.ngrok.io");
+            socket = IO.socket("http://49d57311.ngrok.io");
             socket.connect();
         } catch (URISyntaxException e) {
             e.printStackTrace();
