@@ -10,6 +10,14 @@ public class PatientProfileImage extends Activity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.patient_profile_image);
+
+//        final WatchViewStub stub = findViewById(R.id.patient_profile_image);
+//        stub.setOnLayoutInflatedListener(new WatchViewStub.OnLayoutInflatedListener() {
+//            @Override
+//            public void onLayoutInflated(WatchViewStub stub) {
+//                String patientImage = getIntent().getStringExtra("patient_image");
+//            }
+//        });
     }
 
     public void onPPClick(View view) {
