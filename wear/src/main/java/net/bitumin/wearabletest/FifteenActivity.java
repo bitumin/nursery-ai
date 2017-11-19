@@ -5,6 +5,9 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 
+import io.socket.client.Socket;
+import io.socket.emitter.Emitter;
+
 public class FifteenActivity extends Activity {
 
     @Override
@@ -14,7 +17,14 @@ public class FifteenActivity extends Activity {
     }
 
     public void on15Click(View view) {
+        emitAlert();
         Intent intent = new Intent(FifteenActivity.this, UpdateSuccessTimer.class);
         startActivity(intent);
+    }
+
+    private void emitAlert() {
+        MyApp myApp = (MyApp) getApplication();
+        Socket socket = myApp.getSocket();
+        socket.emit("message-alert");
     }
 }

@@ -12,7 +12,6 @@ import android.support.wearable.view.WatchViewStub;
 import android.view.View;
 import android.widget.Toast;
 
-import java.net.URISyntaxException;
 import java.util.List;
 import java.util.Locale;
 
@@ -24,13 +23,10 @@ import ai.api.model.AIResponse;
 import ai.api.model.Metadata;
 import ai.api.model.ResponseMessage;
 import ai.api.model.Result;
-import io.socket.client.IO;
 import io.socket.client.Socket;
 import io.socket.emitter.Emitter;
 
 public class MainActivity extends Activity {
-
-    private Socket socket;
 
     private static final int SPEECH_RECOGNIZER_REQUEST_CODE = 100;
     private static final String BOT_CLIENT_KEY = "9ecd9dc048a446a1a29a48b3235c914f";
@@ -42,7 +38,7 @@ public class MainActivity extends Activity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        initSocketIO();
+        initSocketListeners();
 
         final WatchViewStub stub = findViewById(R.id.activity_main);
         stub.setOnLayoutInflatedListener(new WatchViewStub.OnLayoutInflatedListener() {
@@ -193,17 +189,27 @@ public class MainActivity extends Activity {
         startActivity(intent);
     }
 
-    private void loadBlueNotificationView() {
+    public void loadBlueNotificationView() {
         Intent intent = new Intent(MainActivity.this, FifteenActivity.class);
         startActivity(intent);
     }
 
-    private void loadYellowNotificationView() {
+    public void loadYellowNotificationView() {
         Intent intent = new Intent(MainActivity.this, SevenActivity.class);
         startActivity(intent);
     }
 
-    private void initSocketIO() {
-        socket = SocketSingleton.getInstance().getInstanceSocket();
+    private void initSocketListeners() {
+        MyApp myApp = (MyApp) getApplication();
+        Socket socket = myApp.getSocket();
+        socket.off("request-nurse-push").on("request-nurse-push", new Emitter.Listener() {
+            public void call(Object... arg0) {
+                loadBlueNotificationView();
+            }
+        }).off("request-nurse-end-push").on("request-nurse-end-push", new Emitter.Listener() {
+            public void call(Object... arg0) {
+                loadYellowNotificationView();
+            }
+        });
     }
 }
