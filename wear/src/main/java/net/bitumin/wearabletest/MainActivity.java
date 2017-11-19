@@ -176,12 +176,27 @@ public class MainActivity extends Activity {
 
     private void loadPatientInformationView(String name, String age, String gender, String specialNeeds, String image) {
         Intent intent = new Intent(MainActivity.this, PatientProfileInformation.class);
+
+        intent.putExtra("patient_name", name);
+        intent.putExtra("patient_age", age);
+        intent.putExtra("patient_gender", gender);
+        intent.putExtra("patient_needs", specialNeeds);
+        intent.putExtra("patient_image", image);
+
         startActivity(intent);
     }
 
     private void loadDoctorSummaryView() {
         Intent intent = new Intent(MainActivity.this, DoctorSummary.class);
         startActivity(intent);
+    }
+
+    private void loadBlueNotificationView() {
+
+    }
+
+    private void loadYellowNotificationView() {
+
     }
 
     private static void initSocketIO() {
@@ -195,6 +210,10 @@ public class MainActivity extends Activity {
             }).on("request-nurse-push", new Emitter.Listener() {
                 public void call(Object... arg0) {
                     System.out.println("push");
+                }
+            }).on("request-nurse-push-end", new Emitter.Listener() {
+                public void call(Object... arg0) {
+                    System.out.println("push end");
                 }
             }).on(Socket.EVENT_DISCONNECT, new Emitter.Listener() {
                 public void call(Object... arg0) {
