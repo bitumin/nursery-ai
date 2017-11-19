@@ -14,7 +14,7 @@ public class FifteenActivity extends Activity {
     }
 
     public void on15Click(View view) {
-        Intent intent = new Intent(FifteenActivity.this, MainActivity.class);
+        Intent intent = new Intent(FifteenActivity.this, UpdateSuccessTimer.class);
         startActivity(intent);
     }
 }
